@@ -75,11 +75,12 @@ impl CyclicAutomaton {
     pub fn update_cell(&self, index: usize) -> u8 {
         let curr_state = self.grid[index];
         let next_state = (curr_state + 1) % self.num_states;
+        
         let neighbour_count = self.neighbours[index]
             .iter()
             .filter(|&i| self.grid[*i] == next_state)
             .count();
-        if neighbour_count > self.threshold {
+        if neighbour_count >= self.threshold {
             return next_state;
         }
         curr_state
