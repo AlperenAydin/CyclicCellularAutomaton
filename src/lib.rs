@@ -5,6 +5,9 @@ pub use cyclic_automaton::*;
 mod config;
 pub use config::*;
 
+mod colormap;
+pub use colormap::*;
+
 use std::env; 
 use std::error::Error;
 use std::fs::File;
@@ -29,10 +32,10 @@ pub fn run_gif(c: GifConfig) -> Result<(), Box<dyn Error>>
 {
     let mut automaton = c.get_automaton();
     automaton.randomize(1234);
-    let color_map = &[0x00, 0x00, 0xFF,  0xFF, 0, 0, 0xFF, 0xFF, 0x00 ];
+    let color_map = get_colormap(c.num_states);
 
     let mut image = File::create(&c.fname).unwrap();
-    let mut encoder = Encoder::new(&mut image, c.width as u16, c.height as u16, color_map).unwrap();
+    let mut encoder = Encoder::new(&mut image, c.width as u16, c.height as u16, &color_map).unwrap();
     encoder.set_repeat(Repeat::Infinite).unwrap();
     for _ in 0..c.generations {
         let mut frame = Frame::default();

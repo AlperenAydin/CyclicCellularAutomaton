@@ -75,9 +75,9 @@ impl Default for GifConfig {
             width: 300,
             height: 300,
             seed: 1,
-            num_states: 5,
-            threshold: 1,
-            generations: 50,
+            num_states: 6,
+            threshold: 2,
+            generations: 100,
         }
     }
 }
