@@ -1,6 +1,7 @@
 use itertools::iproduct;
 use rand::{distributions::Uniform, rngs::StdRng, Rng, SeedableRng};
 use std::ops::{Index, IndexMut};
+use rayon::prelude::*;
 
 // A struct to contain the grid and the various metadata
 // The grid is 2d, but it is stored as a 1d vec.
@@ -88,8 +89,9 @@ impl CyclicAutomaton {
 
     pub fn next_generation(&mut self) {
         let index_range = 0..(self.width * self.height);
-        self.grid = index_range.map(|index| self.update_cell(index)).collect();
+        self.grid = index_range.into_par_iter().map(|index| self.update_cell(index)).collect();
     }
+
 }
 
 // This was previously useful. But I will live it in just in case.
