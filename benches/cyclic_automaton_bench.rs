@@ -4,9 +4,9 @@ extern crate bencher;
 use bencher::Bencher;
 
 use cca::CyclicAutomaton;
+use cca::*;
 
-use gif::{Encoder, Frame, Repeat};
-use std::borrow::Cow;
+use gif::Frame;
 
 fn cca_300x300_100gen_5states(b: &mut Bencher) {
     let mut automaton = CyclicAutomaton::new(300, 300, 5, 1);
@@ -31,12 +31,12 @@ fn cca_1000x1000_100gen_3states(b: &mut Bencher) {
 }
 
 fn frame_create_test(b: &mut Bencher) {
-    let grid = vec![0; 1000*1000];
+    let mut automaton = CyclicAutomaton::new(1000, 1000, 3, 1);
+    automaton.randomize(12345);
+
     b.iter(|| {
         let mut frame = Frame::default();
-        frame.width = 1000;
-        frame.height = 1000;
-        frame.buffer = Cow::Borrowed(&grid);
+        get_frame(&automaton, &mut frame);
     })
 }
 

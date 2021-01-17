@@ -39,12 +39,17 @@ pub fn run_gif(c: GifConfig) -> Result<(), Box<dyn Error>>
     encoder.set_repeat(Repeat::Infinite).unwrap();
     for _ in 0..c.generations {
         let mut frame = Frame::default();
-        frame.width = c.width as u16;
-        frame.height = c.height as u16;
-        frame.buffer = Cow::Borrowed(&automaton.grid);
+        get_frame(&automaton, &mut frame);
         encoder.write_frame(&frame).unwrap();
         automaton.next_generation();
     }
     println!("{:?}", c);
     Ok(())
+}
+
+pub fn get_frame<'a>(automaton: &'a CyclicAutomaton, frame: &mut Frame<'a>)
+{
+    frame.width = automaton.width as u16;
+    frame.height = automaton.height as u16;
+    frame.buffer = Cow::Borrowed(&automaton.grid);
 }

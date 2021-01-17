@@ -1,13 +1,10 @@
-use std::fs::File;
+extern crate gif;
+
+use std::env;
 use std::error::Error;
 
-extern crate gif;
-use gif::{Encoder, Frame, Repeat};
-use std::borrow::Cow;
-use std::env;
-
-use cca::*;
+use cca::run;
 
 fn main() -> Result<(), Box<dyn Error>>{    
-    cca::run(env::args())
+    run(env::args())
 }
